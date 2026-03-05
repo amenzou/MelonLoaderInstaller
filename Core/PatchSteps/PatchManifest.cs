@@ -17,6 +17,8 @@ internal class PatchManifest : IPatchStep
     private const int DebuggableAttributeResourceId = 16842767;
     private const int LegacyStorageAttributeResourceId = 16844291;
     private const int ExtractNativeLibsAttributeResourceId = 16844010;
+    private const int LargeHeapAttributeResourceId = 0x0101021f;
+
 
     private static readonly string[] StandardPermissions =
     [
@@ -98,6 +100,12 @@ internal class PatchManifest : IPatchStep
         {
             _logger!.Log("Adding legacy external storage flag");
             appElement.Attributes.Add(new("requestLegacyExternalStorage", AndroidNamespaceUri, LegacyStorageAttributeResourceId, true));
+        }
+
+        if (!appElement.Attributes.Any(attribute => attribute.Name == "largeHeap"))
+        {
+            _logger!.Log("Adding largeHeap flag");
+            appElement.Attributes.Add(new("largeHeap", AndroidNamespaceUri, LargeHeapAttributeResourceId, true));
         }
 
         // This has only been an issue for split APKs
